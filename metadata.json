@@ -1,0 +1,16 @@
+{
+  "name": "halyard-nginx",
+  "version": "0.0.1",
+  "author": "Les Aker",
+  "license": "MIT",
+  "summary": "Configure nginx sites",
+  "source": "https://github.com/halyard/puppet-nginx",
+  "project_page": "https://github.com/halyard/puppet-nginx",
+  "issues_url": "https://github.com/halyard/puppet-nginx/issues",
+  "dependencies": [
+
+  ],
+  "operatingsystem_support": [
+
+  ]
+}
