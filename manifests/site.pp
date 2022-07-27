@@ -1,7 +1,7 @@
 # @summary Configure nginx site
 #
 # @param site sets the name of the site
-define wireguard::network (
+define nginx::site (
   String $site = $title,
 ) {
   file { "/etc/nginx/${site}.conf":
