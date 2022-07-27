@@ -10,7 +10,7 @@ define nginx::site (
   String $proxy_target,
   String $tls_account,
   Optional[String] $tls_challengealias = undef,
-  Array{String} $bind_addresses = ['*', '[::]'],
+  Array[String] $bind_addresses = ['*', '[::]'],
   Array[String] $allow_ranges = [],
   String $site = $title,
 ) {
