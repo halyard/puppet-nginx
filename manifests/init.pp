@@ -9,6 +9,7 @@ class nginx (
   -> file { [
       '/etc/nginx',
       '/etc/nginx/sites',
+      '/etc/nginx/ssl',
     ]:
       ensure => directory,
       owner  => 'root',
