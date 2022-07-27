@@ -10,7 +10,7 @@ define nginx::site (
   Array[String] $allow_ranges = [],
   String $site = $title,
 ) {
-  file { "/etc/nginx/${site}.conf":
+  file { "/etc/nginx/sites/${site}.conf":
     ensure  => file,
     owner   => 'root',
     group   => 'http',
