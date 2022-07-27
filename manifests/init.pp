@@ -24,8 +24,7 @@ class nginx (
 
   $sites.each |String $site, Hash $config| {
     nginx::site { $site:
-      *      => $config,
-      notify => Service['nginx'],
+      * => $config,
     }
   }
 
