@@ -7,6 +7,7 @@
 # @param allow_ranges restricts access to the site based on source IP
 # @param csp sets the content security policy for the site
 # @param proxy_params sets extra options to use in the proxy config
+# @param custom_file sets a total override for the contents of the nginx config
 # @param site sets the name of the site
 define nginx::site (
   String $proxy_target,
@@ -16,6 +17,7 @@ define nginx::site (
   Array[String] $allow_ranges = [],
   String $csp = "default-src 'self' http: https: ws: wss: data: blob: 'unsafe-inline'; frame-ancestors 'self';",
   Hash[String, String] $proxy_params = {},
+  Optional[String] $custom_file = undef,
   String $site = $title,
 ) {
   acme::certificate { $site:
@@ -26,12 +28,17 @@ define nginx::site (
     challengealias => $tls_challengealias,
   }
 
+  $contents = $custom_file ? {
+    undef   => template('nginx/site.conf.erb'),
+    default => $custom_file,
+  }
+
   -> file { "/etc/nginx/sites/${site}.conf":
     ensure  => file,
     owner   => 'root',
     group   => 'http',
     mode    => '0640',
-    content => template('nginx/site.conf.erb'),
+    content => $contents,
     notify  => Service['nginx'],
   }
 }
