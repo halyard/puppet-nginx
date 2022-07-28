@@ -20,17 +20,17 @@ define nginx::site (
   Optional[String] $custom_file = undef,
   String $site = $title,
 ) {
+  $contents = $custom_file ? {
+    undef   => template('nginx/site.conf.erb'),
+    default => $custom_file,
+  }
+
   acme::certificate { $site:
     reloadcmd      => '/usr/bin/systemctl reload nginx',
     keypath        => "/etc/nginx/ssl/${site}.key",
     fullchainpath  => "/etc/nginx/ssl/${site}.crt",
     account        => $tls_account,
     challengealias => $tls_challengealias,
-  }
-
-  $contents = $custom_file ? {
-    undef   => template('nginx/site.conf.erb'),
-    default => $custom_file,
   }
 
   -> file { "/etc/nginx/sites/${site}.conf":
