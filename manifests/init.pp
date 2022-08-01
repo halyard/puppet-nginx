@@ -1,7 +1,9 @@
 # @summary Configure nginx sites
 #
+# @ports sets which ports to allow through the firewall for nginx
 # @param sites
 class nginx (
+  Array[Integer] $ports = [433],
   Hash[String, Hash[String, Any]] $sites = {},
 ) {
   package { 'nginx': }
@@ -26,6 +28,14 @@ class nginx (
   $sites.each |String $site, Hash $config| {
     nginx::site { $site:
       * => $config,
+    }
+  }
+
+  $ports.each |Integer $port| {
+    firewall { "100 allow inbound ${port} for nginx":
+      dport    => $port,
+      proto    => 'tcp',
+      action   => 'accept',
     }
   }
 
