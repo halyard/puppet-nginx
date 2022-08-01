@@ -1,7 +1,7 @@
 # @summary Configure nginx sites
 #
-# @ports sets which ports to allow through the firewall for nginx
-# @param sites
+# @param ports sets which ports to allow through the firewall for nginx
+# @param sites defines sites to create via hiera
 class nginx (
   Array[Integer] $ports = [433],
   Hash[String, Hash[String, Any]] $sites = {},
