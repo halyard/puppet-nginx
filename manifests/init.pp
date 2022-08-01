@@ -3,7 +3,7 @@
 # @param ports sets which ports to allow through the firewall for nginx
 # @param sites defines sites to create via hiera
 class nginx (
-  Array[Integer] $ports = [433],
+  Array[Integer] $ports = [443],
   Hash[String, Hash[String, Any]] $sites = {},
 ) {
   package { 'nginx': }
