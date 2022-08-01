@@ -33,9 +33,9 @@ class nginx (
 
   $ports.each |Integer $port| {
     firewall { "100 allow inbound ${port} for nginx":
-      dport    => $port,
-      proto    => 'tcp',
-      action   => 'accept',
+      dport  => $port,
+      proto  => 'tcp',
+      action => 'accept',
     }
   }
 
