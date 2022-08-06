@@ -20,6 +20,8 @@ define nginx::site (
   Optional[String] $custom_file = undef,
   String $site = $title,
 ) {
+  include nginx
+
   $contents = $custom_file ? {
     undef   => template('nginx/site.conf.erb'),
     default => $custom_file,
