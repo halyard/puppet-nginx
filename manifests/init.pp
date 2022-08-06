@@ -11,6 +11,7 @@ class nginx (
   -> file { [
       '/etc/nginx',
       '/etc/nginx/ssl',
+      '/etc/nginx/creds',
     ]:
       ensure => directory,
       owner  => 'root',

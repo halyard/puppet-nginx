@@ -9,6 +9,7 @@
 # @param proxy_params sets extra options to use in the proxy config
 # @param custom_file sets a total override for the contents of the nginx config
 # @param site sets the name of the site
+# @param users sets basic auth users and hashed passwords
 define nginx::site (
   String $proxy_target,
   String $tls_account,
@@ -19,6 +20,7 @@ define nginx::site (
   Hash[String, String] $proxy_params = {},
   Optional[String] $custom_file = undef,
   String $site = $title,
+  Hash[String, String] $users = {},
 ) {
   include nginx
 
@@ -42,5 +44,16 @@ define nginx::site (
     mode    => '0640',
     content => $contents,
     notify  => Service['nginx'],
+  }
+
+  if length($users) > 0 {
+    file { "/etc/nginx/creds/${site}.htpasswd":
+      ensure  => file,
+      owner   => 'root',
+      group   => 'http',
+      mode    => '0640',
+      content => template('nginx/htpasswd.erb'),
+      notify  => Service['nginx'],
+    }
   }
 }
