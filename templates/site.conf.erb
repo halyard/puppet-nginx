@@ -20,7 +20,7 @@ server {
     deny all;
 <% end -%>
 
-<% unless @users.empty -%>
+<% unless @users.empty? -%>
     auth_basic "restricted";
     auth_basic_user_file /etc/nginx/creds/<%= @site %>.htpasswd;
 <% end -%>
