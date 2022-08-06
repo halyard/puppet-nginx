@@ -31,6 +31,13 @@ class nginx (
     }
   }
 
+  file { '/etc/nginx/sites':
+    ensure  => directory,
+    recurse => true,
+    purge   => true,
+    notify  => Service['nginx'],
+  }
+
   $ports.each |Integer $port| {
     firewall { "100 allow inbound ${port} for nginx":
       dport  => $port,
