@@ -10,7 +10,6 @@ class nginx (
 
   -> file { [
       '/etc/nginx',
-      '/etc/nginx/sites',
       '/etc/nginx/ssl',
     ]:
       ensure => directory,
@@ -33,6 +32,9 @@ class nginx (
 
   file { '/etc/nginx/sites':
     ensure  => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
     recurse => true,
     purge   => true,
     notify  => Service['nginx'],
