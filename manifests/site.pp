@@ -2,6 +2,7 @@
 #
 # @param proxy_target sets the target for the nginx proxy
 # @param tls_account sets the TLS account config
+# @param port sets the port to listen on
 # @param tls_challengealias sets the alias for TLS cert
 # @param bind_addresses sets the IP for the site
 # @param allow_ranges restricts access to the site based on source IP
@@ -13,6 +14,7 @@
 define nginx::site (
   String $proxy_target,
   String $tls_account,
+  Integer $port = 443,
   Optional[String] $tls_challengealias = undef,
   Array[String] $bind_addresses = ['*', '[::]'],
   Array[String] $allow_ranges = [],
