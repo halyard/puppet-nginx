@@ -1,9 +1,10 @@
 # @summary Configure nginx site
 #
 # @param proxy_target sets the target for the nginx proxy
-# @param tls_account sets the TLS account config
+# @param aws_access_key_id sets the AWS key to use for Route53 challenge
+# @param aws_secret_access_key sets the AWS secret key to use for the Route53 challenge
+# @param email sets the contact address for the certificate
 # @param port sets the port to listen on
-# @param tls_challengealias sets the alias for TLS cert
 # @param bind_addresses sets the IP for the site
 # @param allow_ranges restricts access to the site based on source IP
 # @param csp sets the content security policy for the site
@@ -13,9 +14,10 @@
 # @param users sets basic auth users and hashed passwords
 define nginx::site (
   String $proxy_target,
-  String $tls_account,
+  String $aws_access_key_id,
+  String $aws_secret_access_key,
+  String $email,
   Integer $port = 443,
-  Optional[String] $tls_challengealias = undef,
   Array[String] $bind_addresses = ['*', '[::]'],
   Array[String] $allow_ranges = [],
   String $csp = "default-src 'self' http: https: ws: wss: data: blob: 'unsafe-inline'; frame-ancestors 'self';",
@@ -31,12 +33,16 @@ define nginx::site (
     default => $custom_file,
   }
 
+  $hook_script =  "#!/usr/bin/env bash
+cp \$LEGO_CERT_PATH /etc/nginx/ssl/${site}.crt
+cp \$LEGO_CERT_KEY_PATH /etc/nginx/ssl/${site}.key
+/usr/bin/systemctl reload nginx"
+
   acme::certificate { $site:
-    reloadcmd      => '/usr/bin/systemctl reload nginx',
-    keypath        => "/etc/nginx/ssl/${site}.key",
-    fullchainpath  => "/etc/nginx/ssl/${site}.crt",
-    account        => $tls_account,
-    challengealias => $tls_challengealias,
+    hook_script           => $hook_script,
+    aws_access_key_id     => $aws_access_key_id,
+    aws_secret_access_key => $aws_secret_access_key,
+    email                 => $email,
   }
 
   -> file { "/etc/nginx/sites/${site}.conf":
