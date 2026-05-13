@@ -34,8 +34,8 @@ define nginx::site (
   }
 
   $hook_script =  "#!/usr/bin/env bash
-cp \$LEGO_CERT_PATH /etc/nginx/ssl/${site}.crt
-cp \$LEGO_CERT_KEY_PATH /etc/nginx/ssl/${site}.key
+cp \$LEGO_HOOK_CERT_PATH /etc/nginx/ssl/${site}.crt
+cp \$LEGO_HOOK_CERT_KEY_PATH /etc/nginx/ssl/${site}.key
 /usr/bin/systemctl reload nginx"
 
   acme::certificate { $site:
