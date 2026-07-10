@@ -1,8 +1,9 @@
 server {
     server_name <%= @site %>;
 <% @bind_addresses.each do |x| -%>
-    listen <%= "#{x}:#{@port}" %> ssl http2;
+    listen <%= "#{x}:#{@port}" %> ssl;
 <% end -%>
+    http2 on;
 
     ssl_certificate /etc/nginx/ssl/<%= @site %>.crt;
     ssl_certificate_key /etc/nginx/ssl/<%= @site %>.key;
